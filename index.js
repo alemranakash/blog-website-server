@@ -30,6 +30,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     const blogCollection = client.db('blogDB').collection('allBlogs');
+    const commentCollection = client.db('blogDB').collection('comments');
 
 // * all blog
 // * add new blog
@@ -50,6 +51,16 @@ app.get('/recentBlogs', async (req, res) => {
   const result = await blogCollection.find().sort({ createdAt: -1 }).limit(6).toArray();
   res.send(result);
 });
+
+
+// * Comments section
+// *add comments
+app.post('/allComments', async (req, res) => {
+  const addComment = req.body;
+  console.log('addComment', addComment)
+  const result = await commentCollection.insertOne(addComment);
+  res.send(result);
+})
 
 
 
