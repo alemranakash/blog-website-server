@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 //* Middleware
@@ -51,6 +51,33 @@ app.get('/recentBlogs', async (req, res) => {
   const result = await blogCollection.find().sort({ createdAt: -1 }).limit(6).toArray();
   res.send(result);
 });
+
+// * update blog
+app.get('/allBlogs/:id', async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) }
+  const result = await blogCollection.findOne(query)
+  res.send(result)
+})
+
+app.put('/allBlogs/:id', async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: new ObjectId(id) }
+  const options = { upsert: true }
+  const updatedBlog = req.body;
+  const blog = {
+    $set: {
+      image: updatedBlog.image,
+      title: updatedBlog.title,
+      category: updatedBlog.category,
+      short_description: updatedBlog.short_description,
+      long_description: updatedBlog.long_description
+    }
+  };
+  const result = await blogCollection.updateOne(filter, blog, options);
+  res.send(result);
+});
+
 
 
 // * Comments section
