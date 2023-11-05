@@ -105,7 +105,10 @@ app.post('/wishList', async (req, res) => {
   res.send(result)
 })
 
-
+app.get('/wishList', async (req, res) =>{
+  const result = await wishListCollection.find().toArray();
+  res.send(result)
+})
 
 
 
