@@ -45,6 +45,13 @@ app.get('/allBlogs', async (req, res) => {
   res.send(result)
 })
 
+// * show recent blogs
+app.get('/recentBlogs', async (req, res) => {
+  const result = await blogCollection.find().sort({ createdAt: -1 }).limit(6).toArray();
+  res.send(result);
+});
+
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
