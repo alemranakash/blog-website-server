@@ -62,6 +62,14 @@ app.post('/allComments', async (req, res) => {
   res.send(result);
 })
 
+// * show comment
+app.get('/allComments', async (req, res) => {
+  const result = await commentCollection.find().toArray();
+  res.send(result)
+})
+
+
+
 
 
     // Send a ping to confirm a successful connection
