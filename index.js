@@ -31,12 +31,13 @@ async function run() {
     // await client.connect();
     const blogCollection = client.db('blogDB').collection('allBlogs');
     const commentCollection = client.db('blogDB').collection('comments');
+    const wishListCollection = client.db('blogDB').collection('wishList');
 
 // * all blog
 // * add new blog
     app.post('/allBlogs', async (req, res) => {
       const addBlogs = req.body;
-      console.log('addBlogs', addBlogs)
+      // console.log('addBlogs', addBlogs)
       const result = await blogCollection.insertOne(addBlogs);
       res.send(result);
     })
@@ -84,7 +85,7 @@ app.put('/allBlogs/:id', async (req, res) => {
 // *add comments
 app.post('/allComments', async (req, res) => {
   const addComment = req.body;
-  console.log('addComment', addComment)
+  // console.log('addComment', addComment)
   const result = await commentCollection.insertOne(addComment);
   res.send(result);
 })
@@ -92,6 +93,15 @@ app.post('/allComments', async (req, res) => {
 // * show comment
 app.get('/allComments', async (req, res) => {
   const result = await commentCollection.find().toArray();
+  res.send(result)
+})
+
+
+// *wishlist section
+app.post('/wishList', async (req, res) => {
+  const wishListBlogs = req.body;
+  console.log('WishList', wishListBlogs)
+  const result = await wishListCollection.insertOne(wishListBlogs)
   res.send(result)
 })
 
