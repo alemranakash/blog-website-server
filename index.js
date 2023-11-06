@@ -104,7 +104,7 @@ app.post('/logout', async (req, res) => {
       res.send(result);
     })
 // *show all blog
-app.get('/allBlogs', logger, verifyToken, async (req, res) => {
+app.get('/allBlogs', async (req, res) => {
   const result = await blogCollection.find().toArray();
   res.send(result)
 })
@@ -123,7 +123,7 @@ app.get('/allBlogs/:id', async (req, res) => {
   res.send(result)
 })
 
-app.put('/allBlogs/:id', logger, async (req, res) => {
+app.put('/allBlogs/:id', async (req, res) => {
   const id = req.params.id;
   const filter = { _id: new ObjectId(id) }
   const options = { upsert: true }
