@@ -47,7 +47,14 @@ app.post('/jwt', async(req, res)=>{
   console.log('User for token' , user);
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, 
   {expiresIn: '1h'})
-  res.send({token})
+  
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none'
+  })
+  
+  res.send({success: true});
 })
 
     // * blog related apis
