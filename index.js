@@ -42,6 +42,7 @@ async function run() {
     const wishListCollection = client.db('blogDB').collection('wishList');
 
 // * auth related apis
+// *create token
 app.post('/jwt', async(req, res)=>{
   const user = req.body;
   console.log('User for token' , user);
@@ -56,6 +57,17 @@ app.post('/jwt', async(req, res)=>{
   
   res.send({success: true});
 })
+
+// * clear token for logout user
+app.post('/logout', async (req, res) => {
+  const user = req.body;
+  console.log('logging out', user);
+  res.clearCookie('token', { maxAge: 0 }).send({ success: true })
+})
+
+
+
+
 
     // * blog related apis
 // * all blog
