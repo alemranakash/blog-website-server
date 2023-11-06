@@ -33,6 +33,15 @@ async function run() {
     const commentCollection = client.db('blogDB').collection('comments');
     const wishListCollection = client.db('blogDB').collection('wishList');
 
+// * auth related apis
+app.post('/jwt', async(req, res)=>{
+  const user = req.body;
+  console.log('User for token' , user);
+  const token = jwt.sign(user, 'secret', 
+  {expiresIn: '1h'})
+})
+
+    // * blog related apis
 // * all blog
 // * add new blog
     app.post('/allBlogs', async (req, res) => {
