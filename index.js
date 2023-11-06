@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const jwt = require('jsonwebtoken')
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
@@ -17,9 +18,10 @@ app.use(cors(
   }
 ));
 app.use(express.json());
+app.use(cookieParser());
 
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASSWORD);
+// console.log(process.env.DB_USER);
+// console.log(process.env.DB_PASSWORD);
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ftdzayi.mongodb.net/?retryWrites=true&w=majority`;
@@ -138,6 +140,7 @@ app.get('/allComments', async (req, res) => {
 app.post('/wishList', async (req, res) => {
   const wishListBlogs = req.body;
   console.log('WishList', wishListBlogs)
+ 
   const result = await wishListCollection.insertOne(wishListBlogs)
   res.send(result)
 })
