@@ -44,8 +44,18 @@ const logger = (req, res, next) =>{
 
 const verifyToken = (req, res, next) =>{
   const token = req?.cookies?.token;
-   console.log('token in the middleware', token);
-next();
+  //  console.log('token in the middleware', token);
+    // no token available 
+    if(!token){
+      return res.status(401).send({message: 'unauthorized access'})
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{
+      if(err){
+          return res.status(401).send({message: 'unauthorized access'})
+      }
+      req.user = decoded;
+      next();
+  })
 }
 
 async function run() {
@@ -87,14 +97,14 @@ app.post('/logout', async (req, res) => {
     // * blog related apis
 // * all blog
 // * add new blog
-    app.post('/allBlogs', logger, async (req, res) => {
+    app.post('/allBlogs', async (req, res) => {
       const addBlogs = req.body;
       // console.log('addBlogs', addBlogs)
       const result = await blogCollection.insertOne(addBlogs);
       res.send(result);
     })
 // *show all blog
-app.get('/allBlogs', async (req, res) => {
+app.get('/allBlogs', logger, verifyToken, async (req, res) => {
   const result = await blogCollection.find().toArray();
   res.send(result)
 })
@@ -159,6 +169,8 @@ app.post('/wishList', async (req, res) => {
 })
 
 app.get('/wishList', logger, verifyToken, async (req, res) =>{
+  console.log('token owner info', req.user)
+  
   const result = await wishListCollection.find().toArray();
   res.send(result)
 })
