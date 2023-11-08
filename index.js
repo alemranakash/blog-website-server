@@ -12,7 +12,10 @@ const port = process.env.PORT || 5000;
 app.use(cors(
   {
     origin:[
-      'http://localhost:5173'
+      // 'http://localhost:5173',
+      'https://blog-website-fb267.web.app',
+      'https://blog-website-fb267.firebaseapp.com/'
+
     ],
     credentials: true
   }
